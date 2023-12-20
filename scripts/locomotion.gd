@@ -1,25 +1,12 @@
 extends Node3D
 
-@export var max_speed:= 2.5
-@export var dead_zone := 0.2
-
-@export var smooth_turn_speed:= 45.0
-@export var smooth_turn_dead_zone := 0.2
-
-var input_vector:= Vector2.ZERO
-
-var hand_steer = false
-var snap_turn = false
-
-var can_snap = true
-
 var xr_interface: XRInterface
 
 var camera: XRCamera3D
 var previous_pos: Vector3
 var previous_rot = 0
 
-var translation_gain = 0.5
+var translation_gain = 0
 var valid_movement = 0.15
 
 var rotation_gain = 0 # 0 means no rotation gain, 1 means double rotation (e.g physical 90* is virtual 180*), 2 triple, etc.
@@ -52,15 +39,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	# # Forward translation
-	# if self.input_vector.y > self.dead_zone || self.input_vector.y < -self.dead_zone:
-	# 	var movement_vector = Vector3(0, 0, max_speed * -self.input_vector.y * _delta)
-		
-	# 	if !hand_steer: # Move in direction of camera
-	# 		self.position += movement_vector.rotated(Vector3.UP, $XRCamera3D.global_rotation.y)
-	# 	else:
-	# 		self.position += movement_vector.rotated(Vector3.UP, $RightController.global_rotation.y)
-
 	# Once the camera's position is set at the start, move to the start point and face the first target
 	if !already_moved && self.camera.position.x != 0 && self.camera.position.z != 0:
 		var delta = self.camera.global_position - %Start.global_position
